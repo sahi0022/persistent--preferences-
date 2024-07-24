@@ -1,40 +1,35 @@
-body {
-    font-family: Arial, sans-serif;
-}
+document.addEventListener('DOMContentLoaded', () => {
+    const itemList = document.getElementById('item-list');
+    const themeSelect = document.getElementById('theme-select');
+    const listStyleSelect = document.getElementById('list-style-select');
 
-.container {
-    max-width: 600px;
-    margin: 0 auto;
-    padding: 20px;
-}
+    
+    const savedTheme = localStorage.getItem('theme') || 'light';
+    const savedListStyle = localStorage.getItem('listStyle') || 'disc';
 
-#preferences-panel {
-    margin-top: 20px;
-}
+    document.body.classList.add(`${savedTheme}-theme`);
+    itemList.classList.add(savedListStyle);
+    themeSelect.value = savedTheme;
+    listStyleSelect.value = savedListStyle;
 
-.light-theme {
-    background-color: white;
-    color: black;
-}
+  
+    const items = ['This is Item 1', 'This is Item 2', 'This is Item 3', 'This is Item 4', 'This is Item 5'];
+    items.forEach(item => {
+        const li = document.createElement('li');
+        li.textContent = item;
+        itemList.appendChild(li);
+    });
 
-.dark-theme {
-    background-color: #333;
-    color: white;
-}
 
-.colorful-theme {
-    background-color: #0fc85f95;
-    color: #0d47a1;
-}
+    themeSelect.addEventListener('change', (event) => {
+        document.body.classList.remove('light-theme', 'dark-theme', 'colorful-theme');
+        document.body.classList.add(`${event.target.value}-theme`);
+        localStorage.setItem('theme', event.target.value);
+    });
 
-ul.disc {
-    list-style-type: disc;
-}
-
-ul.circle {
-    list-style-type: circle;
-}
-
-ul.square {
-    list-style-type: square;
-}
+    listStyleSelect.addEventListener('change', (event) => {
+        itemList.classList.remove('disc', 'circle', 'square');
+        itemList.classList.add(event.target.value);
+        localStorage.setItem('listStyle', event.target.value);
+    });
+});
